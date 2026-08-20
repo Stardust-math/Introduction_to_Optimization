@@ -1,0 +1,15 @@
+n = 500
+seed = 0
+theta = 2.458089440898643
+algorithm_time = 0.0009610999841243029
+cvxpy_time = 0.03362550004385412
+algorithm_objective = 254.33505541902846
+cvxpy_objective = 254.3350554190285
+l2_difference = 8.416972462747517e-15
+linf_difference = 4.884981308350689e-15
+sum_x_algorithm = 0.9999999999999996
+sum_x_cvxpy = 0.9999999999999796
+min_x_algorithm = 0.0
+min_x_cvxpy = -1.152064525402398e-17
+support_size_algorithm = 3
+support_size_cvxpy = 3

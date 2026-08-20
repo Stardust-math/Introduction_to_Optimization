@@ -1,0 +1,1899 @@
+	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+%  Template for homework of Introduction to Machine Learning.
+%
+%  Fill in your name, lecture number, lecture date and body
+%  of homework as indicated below.
+%         
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\documentclass[11pt,letter,notitlepage]{article}
+%Mise en page
+\usepackage[left=2cm, right=2cm, lines=45, top=0.8in, bottom=0.7in]{geometry}
+\usepackage{fancyhdr}
+\usepackage{fancybox}
+\usepackage{graphicx}
+\usepackage{pdfpages}
+\usepackage{enumitem}
+\usepackage{algorithm}
+\usepackage{algorithmic}
+\usepackage{pifont}
+\renewcommand{\headrulewidth}{1.5pt}
+\renewcommand{\footrulewidth}{1.5pt}
+\newcommand\Loadedframemethod{TikZ}
+\usepackage[framemethod=\Loadedframemethod]{mdframed}
+\usepackage{amssymb,amsmath}
+\usepackage{extarrows}
+\usepackage{amsthm}
+\usepackage{thmtools}
+\usepackage{bm}
+\usepackage{listings}
+\usepackage{xcolor}
+
+\lstset{
+    language=Python,
+    basicstyle=\ttfamily\small,
+    keywordstyle=\color{blue},
+    commentstyle=\color{teal},
+    stringstyle=\color{red},
+    showstringspaces=false,
+    breaklines=true,
+    frame=single
+}
+
+\setlength{\topmargin}{0pt}
+\setlength{\textheight}{9in}
+\setlength{\headheight}{0pt}
+\setlength{\oddsidemargin}{0.25in}
+\setlength{\textwidth}{6in}
+%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%% Define math operator %%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%
+\DeclareMathOperator*{\argmin}{\bf argmin}
+\DeclareMathOperator*{\relint}{\bf relint\,}
+\DeclareMathOperator*{\dom}{\bf dom\,}
+\DeclareMathOperator*{\intp}{\bf int\,}
+%%%%%%%%%%%%%%%%%%%%%%%
+\setlength{\topmargin}{0pt}
+\setlength{\textheight}{9in}
+\setlength{\headheight}{0pt}
+\setlength{\oddsidemargin}{0.25in}
+\setlength{\textwidth}{6in}
+\pagestyle{fancy}
+%%%%%%%%%%%%%%%%%%%%%%%%
+%% Define the Exercise environment %%
+%%%%%%%%%%%%%%%%%%%%%%%%
+\mdtheorem[
+topline=false,
+rightline=false,
+leftline=false,
+bottomline=false,
+leftmargin=-10,
+rightmargin=-10
+]{exercise}{\textbf{Exercise}}
+\renewcommand{\theexercise}{\arabic{exercise}:}
+%%%%%%%%%%%%%%%%%%%%%%%
+%% End of the Exercise environment %%
+%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%
+%% Define the Problem environment %%
+%%%%%%%%%%%%%%%%%%%%%%%%
+\mdtheorem[
+topline=false,
+rightline=false,
+leftline=false,
+bottomline=false,
+leftmargin=-10,
+rightmargin=-10
+]{problem}{\textbf{Problem}}
+%%%%%%%%%%%%%%%%%%%%%%%
+%% End of the Exercise environment %%
+%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%
+%% Define the Solution Environment %%
+%%%%%%%%%%%%%%%%%%%%%%%
+\declaretheoremstyle
+[
+spaceabove=0pt,
+spacebelow=0pt,
+headfont=\normalfont\bfseries,
+notefont=\mdseries,
+notebraces={(}{)},
+headpunct={:},
+headindent={},
+postheadspace=\newline,
+bodyfont=\normalfont,
+qed=$\blacksquare$,
+preheadhook={\begin{mdframed}[style=myframedstyle]},
+postfoothook=\end{mdframed},
+]{mystyle}
+\declaretheorem[style=mystyle,title=Solution]{solution}
+\mdfdefinestyle{myframedstyle}{%
+	topline=false,
+	rightline=false,
+	leftline=false,
+	bottomline=false,
+	skipabove=-6ex,
+	leftmargin=-10,
+	rightmargin=-10,
+	backgroundcolor=black!5}
+%%%%%%%%%%%%%%%%%%%%%%%
+%% End of the Solution environment
+
+\renewcommand{\eqref}[1]{Eq.~(\ref{#1})}
+\newcommand{\figref}[1]{Fig.~\ref{#1}}
+
+
+\newcommand{\proj}[2]{\textbf{P}_{#2} (#1)}
+\newcommand{\lspan}[1]{\textbf{span}  (#1)  }
+\newcommand{\rank}[1]{ \textbf{rank}  (#1)  }
+\newcommand{\tr}{ \operatorname{tr}  }
+\newcommand{\RNum}[1]{\uppercase\expandafter{\romannumeral #1\relax}}
+
+\newcommand{\mb}[1]{\mathbf{#1}}
+
+\DeclareMathOperator*{\cl}{\bf cl\,}
+\DeclareMathOperator*{\bd}{\bf bd\,}
+\DeclareMathOperator*{\conv}{\bf conv\,}
+\DeclareMathOperator*{\epi}{\bf epi\,}
+
+% Definition environment	
+\theoremstyle{definition}	
+\newtheorem{definition}{Definition}	
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%           Homework info.             %%
+\newcommand{\posted}{\text{Mar. 30th, 2025}}       			%%% FILL IN POST DATE HERE
+\newcommand{\due}{\text{Apr. 13th, 2025}} 			%%% FILL IN Due DATE HERE
+\newcommand{\hwno}{\text{3}} 		           			%%% FILL IN LECTURE NUMBER HERE
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%    Put your information here   %%
+\newcommand{\name}{\text{Jinghao Chen}}  	          			%%% FILL IN YOUR NAME HERE
+\newcommand{\id}{\text{PB23010359}}		       			%%% FILL IN YOUR ID HERE
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\lhead{
+ 	\textbf{\name}
+}
+\rhead{
+ 	\textbf{\id}
+}
+\chead{\textbf{
+		Homework \hwno
+}}
+
+
+\begin{document}
+	\vspace*{-4\baselineskip}
+	\thispagestyle{empty}
+	
+	
+	\begin{center}
+		{\bf\large Introduction to Optimization}\\
+		{Spring 2026}\\
+		University of Science and Technology of China
+	\end{center}
+	
+	\noindent
+	Lecturer: Nick  			 %%% FILL IN LECTURER HERE
+	\hfill
+	Homework \hwno             			
+	\\
+	Posted: \posted
+	\hfill
+	Due: \due
+    \\
+	Name: \name             			
+	\hfill
+	ID: \id
+	
+	\noindent
+	\rule{\textwidth}{2pt}
+	
+	\medskip
+	
+	
+	
+	
+	
+	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	%% BODY OF HOMEWORK GOES HERE
+	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{exercise}
+Derive the dual of the following LPs. Also compute the dual of the dual for each case and interpret your findings.
+
+\begin{enumerate}
+    \item[(a)]
+    \[
+    \begin{aligned}
+        \text{minimize} \quad & c^T x \\
+        \text{subject to} \quad & Ax \succeq b
+    \end{aligned}
+    \]
+
+    \item[(b)]
+    \[
+    \begin{aligned}
+        \text{minimize} \quad & c^T x \\
+        \text{subject to} \quad & Ax \succeq b,\; x \succeq 0
+    \end{aligned}
+    \]
+\end{enumerate}
+\end{exercise}
+
+\newpage
+
+\begin{solution}
+\leavevmode\vspace{-2em}
+
+\begin{enumerate}
+    \item[(a)]
+    \[
+    \begin{aligned}
+        \text{minimize}\quad & c^T x\\
+        \text{subject to}\quad & Ax \succeq b
+    \end{aligned}
+    \Longleftrightarrow
+    \begin{aligned}
+        \text{minimize}\quad & c^T x\\
+        \text{subject to}\quad & b-Ax \preceq 0
+    \end{aligned}
+    \]
+    Introduce the multiplier $\lambda \succeq 0$. The Lagrangian is
+    \[
+    L(x,\lambda)=c^T x+\lambda^T(b-Ax).
+    \]
+    Expanding and rearranging,
+    \[
+    L(x,\lambda)=c^T x+b^T\lambda-\lambda^T A x
+    =b^T\lambda+\bigl(c-A^T\lambda\bigr)^T x.
+    \]
+
+    Therefore the dual function is
+    \[
+    g(\lambda)=\inf_x L(x,\lambda)
+    =\inf_x\left[b^T\lambda+\bigl(c-A^T\lambda\bigr)^T x\right].
+    \]
+    If $c-A^T\lambda=0$, then the term depending on $x$ vanishes, so
+    \[
+    g(\lambda)=b^T\lambda.
+    \]
+    If $c-A^T\lambda\neq 0$, then
+    \[
+    \inf_x \bigl(c-A^T\lambda\bigr)^T x=-\infty,
+    \]
+    hence
+    \[
+    g(\lambda)=-\infty.
+    \]
+    Thus
+    \[
+    g(\lambda)=
+    \begin{cases}
+        b^T\lambda, & A^T\lambda=c,\\
+        -\infty, & \text{otherwise}.
+    \end{cases}
+    \]
+
+    Hence the dual problem is
+    \[
+    \begin{aligned}
+        \text{maximize}\quad & b^T\lambda\\
+        \text{subject to}\quad & A^T\lambda=c,\\
+        & \lambda \succeq 0.
+    \end{aligned}
+    \]
+
+    Next we compute the dual of this dual. Rewrite the dual as the
+    equivalent minimization problem
+    \[
+    \begin{aligned}
+        \text{minimize}\quad & -b^T\lambda\\
+        \text{subject to}\quad & A^T\lambda-c=0,\\
+        & -\lambda \preceq 0.
+    \end{aligned}
+    \]
+    Let $z$ be the multiplier for the equality constraint
+    $A^T\lambda-c=0$, and let $\mu \succeq 0$ be the multiplier for
+    $-\lambda\preceq 0$. Its Lagrangian is
+    \[
+    L(\lambda,z,\mu)
+    =-b^T\lambda+z^T(A^T\lambda-c)+\mu^T(-\lambda).
+    \]
+    Rearranging,
+    \[
+    L(\lambda,z,\mu)
+    =-b^T\lambda+\lambda^T A z-c^T z-\mu^T\lambda
+    =\lambda^T(Az-b-\mu)-c^T z.
+    \]
+
+    Hence the dual function is
+    \[
+    g(z,\mu)=\inf_\lambda L(\lambda,z,\mu).
+    \]
+    If $Az-b-\mu=0$, then
+    \[
+    g(z,\mu)=-c^T z;
+    \]
+    otherwise,
+    \[
+    g(z,\mu)=-\infty.
+    \]
+    Therefore
+    \[
+    g(z,\mu)=
+    \begin{cases}
+        -c^T z, & Az-b-\mu=0,\\
+        -\infty, & \text{otherwise}.
+    \end{cases}
+    \]
+
+    So the dual of the dual is
+    \[
+    \begin{aligned}
+        \text{maximize}\quad & -c^T z\\
+        \text{subject to}\quad & Az-b-\mu=0,\\
+        & \mu \succeq 0.
+    \end{aligned}
+    \]
+    Eliminating $\mu$, we obtain
+    \[
+    Az-b \succeq 0
+    \quad\Longleftrightarrow\quad
+    Az \succeq b.
+    \]
+    Hence the dual of the dual is equivalently
+    \[
+    \begin{aligned}
+        \text{maximize}\quad & -c^T z\\
+        \text{subject to}\quad & Az \succeq b,
+    \end{aligned}
+    \]
+    or, equivalently,
+    \[
+    \begin{aligned}
+        \text{minimize}\quad & c^T z\\
+        \text{subject to}\quad & Az \succeq b.
+    \end{aligned}
+    \]
+    This is exactly the original primal problem, up to renaming the
+    variable.
+
+    \medskip
+    Interpretation: in part (a), the primal variable $x$ is free in sign,
+    and this corresponds to the equality constraint $A^T\lambda=c$ in the
+    dual.
+
+    \item[(b)] Now consider
+    \[
+    \begin{aligned}
+        \text{minimize}\quad & c^T x\\
+        \text{subject to}\quad & Ax \succeq b,\quad x \succeq 0.
+    \end{aligned}
+    \]
+
+    Rewrite the constraints as
+    \[
+    b-Ax \preceq 0,\qquad -x \preceq 0.
+    \]
+    Introduce multipliers $\lambda \succeq 0$ for $b-Ax\preceq 0$ and
+    $\mu \succeq 0$ for $-x\preceq 0$. The Lagrangian is
+    \[
+    L(x,\lambda,\mu)
+    =c^T x+\lambda^T(b-Ax)+\mu^T(-x).
+    \]
+    Rearranging gives
+    \[
+    L(x,\lambda,\mu)
+    =b^T\lambda+\bigl(c-A^T\lambda-\mu\bigr)^T x.
+    \]
+
+    Therefore
+    \[
+    g(\lambda,\mu)=\inf_x L(x,\lambda,\mu)
+    =\inf_x\left[b^T\lambda+\bigl(c-A^T\lambda-\mu\bigr)^T x\right].
+    \]
+    If
+    \[
+    c-A^T\lambda-\mu=0,
+    \]
+    then
+    \[
+    g(\lambda,\mu)=b^T\lambda.
+    \]
+    Otherwise,
+    \[
+    g(\lambda,\mu)=-\infty.
+    \]
+    Hence
+    \[
+    g(\lambda,\mu)=
+    \begin{cases}
+        b^T\lambda, & c-A^T\lambda-\mu=0,\\
+        -\infty, & \text{otherwise}.
+    \end{cases}
+    \]
+
+    So the dual problem is
+    \[
+    \begin{aligned}
+        \text{maximize}\quad & b^T\lambda\\
+        \text{subject to}\quad & c-A^T\lambda-\mu=0,\\
+        & \lambda \succeq 0,\ \mu \succeq 0.
+    \end{aligned}
+    \]
+    Eliminating $\mu$, we get
+    \[
+    \mu=c-A^T\lambda \succeq 0
+    \quad\Longleftrightarrow\quad
+    A^T\lambda \preceq c.
+    \]
+    Therefore the dual is
+    \[
+    \begin{aligned}
+        \text{maximize}\quad & b^T\lambda\\
+        \text{subject to}\quad & A^T\lambda \preceq c,\\
+        & \lambda \succeq 0.
+    \end{aligned}
+    \]
+
+    Next compute the dual of this dual. Rewrite it as
+    \[
+    \begin{aligned}
+        \text{minimize}\quad & -b^T\lambda\\
+        \text{subject to}\quad & A^T\lambda-c \preceq 0,\\
+        & -\lambda \preceq 0.
+    \end{aligned}
+    \]
+    Let $z \succeq 0$ be the multiplier for $A^T\lambda-c\preceq 0$, and
+    let $\mu \succeq 0$ be the multiplier for $-\lambda\preceq 0$. The
+    Lagrangian is
+    \[
+    L(\lambda,z,\mu)
+    =-b^T\lambda+z^T(A^T\lambda-c)+\mu^T(-\lambda).
+    \]
+    Rearranging,
+    \[
+    L(\lambda,z,\mu)
+    =-b^T\lambda+\lambda^T A z-c^T z-\mu^T\lambda
+    =\lambda^T(Az-b-\mu)-c^T z.
+    \]
+
+    Hence the dual function is
+    \[
+    g(z,\mu)=\inf_\lambda L(\lambda,z,\mu).
+    \]
+    If $Az-b-\mu=0$, then
+    \[
+    g(z,\mu)=-c^T z;
+    \]
+    otherwise,
+    \[
+    g(z,\mu)=-\infty.
+    \]
+    Thus
+    \[
+    g(z,\mu)=
+    \begin{cases}
+        -c^T z, & Az-b-\mu=0,\\
+        -\infty, & \text{otherwise}.
+    \end{cases}
+    \]
+
+    Therefore the dual of the dual is
+    \[
+    \begin{aligned}
+        \text{maximize}\quad & -c^T z\\
+        \text{subject to}\quad & Az-b-\mu=0,\\
+        & z \succeq 0,\ \mu \succeq 0.
+    \end{aligned}
+    \]
+    Eliminating $\mu$ gives
+    \[
+    Az-b \succeq 0
+    \quad\Longleftrightarrow\quad
+    Az \succeq b.
+    \]
+    Hence the dual of the dual is equivalently
+    \[
+    \begin{aligned}
+        \text{maximize}\quad & -c^T z\\
+        \text{subject to}\quad & Az \succeq b,\\
+        & z \succeq 0,
+    \end{aligned}
+    \]
+    or
+    \[
+    \begin{aligned}
+        \text{minimize}\quad & c^T z\\
+        \text{subject to}\quad & Az \succeq b,\quad z \succeq 0.
+    \end{aligned}
+    \]
+    This is again exactly the original primal problem, up to renaming the
+    variable.
+
+    \medskip
+    Interpretation: compared with part (a), the additional primal constraint
+    $x \succeq 0$ changes the dual condition from
+    \[
+    A^T\lambda=c
+    \]
+    to
+    \[
+    A^T\lambda \preceq c.
+    \]
+    In other words, a free primal variable corresponds to an equality
+    constraint in the dual, while a nonnegative primal variable corresponds
+    to an inequality constraint in the dual.
+\end{enumerate}
+
+In both cases, the dual of the dual recovers the original primal LP.
+
+\end{solution}
+
+\newpage
+
+\begin{exercise}
+\textit{Lagrangian relaxation of Boolean LP.} A Boolean linear program is an optimization problem of the form
+\[
+\begin{aligned}
+    \text{minimize} \quad & c^T x \\
+    \text{subject to} \quad & Ax \preceq b \\
+    & x_i \in \{0,1\}, \quad i=1,\dots,n,
+\end{aligned}
+\]
+and is, in general, very difficult to solve. In exercise 4.15 we studied the LP relaxation of this problem,
+\[
+\begin{aligned}
+    \text{minimize} \quad & c^T x \\
+    \text{subject to} \quad & Ax \preceq b \\
+    & 0 \le x_i \le 1, \quad i=1,\dots,n,
+\end{aligned}
+\tag{5.107}
+\]
+which is far easier to solve, and gives a lower bound on the optimal value of the Boolean LP. In this problem we derive another lower bound for the Boolean LP, and work out the relation between the two lower bounds.
+
+\begin{enumerate}
+    \item[(a)] \textit{Lagrangian relaxation.}
+    The Boolean LP can be reformulated as the problem
+    \[
+    \begin{aligned}
+        \text{minimize} \quad & c^T x \\
+        \text{subject to} \quad & Ax \preceq b \\
+        & x_i(1-x_i)=0, \quad i=1,\dots,n,
+    \end{aligned}
+    \]
+    which has quadratic equality constraints. Find the Lagrange dual of this problem.
+    The optimal value of the dual problem (which is convex) gives a lower bound on
+    the optimal value of the Boolean LP. This method of finding a lower bound on the
+    optimal value is called \textit{Lagrangian relaxation}.
+
+    \item[(b)] Show that the lower bound obtained via Lagrangian relaxation, and via
+    the LP relaxation \((5.107)\), are the same.
+
+    \textit{Hint: Derive the dual of the LP relaxation \((5.107)\).}
+\end{enumerate}
+\end{exercise}
+
+\newpage
+
+\begin{solution}
+\leavevmode\vspace{-2em}
+
+\begin{enumerate}
+    \item[(a)] The Boolean constraints $x_i\in\{0,1\}$ can be rewritten as
+    \[
+    x_i(1-x_i)=0,\qquad i=1,\dots,n.
+    \]
+    Hence the Boolean LP is equivalent to
+    \[
+    \begin{aligned}
+        \text{minimize}\quad & c^T x\\
+        \text{subject to}\quad & Ax\preceq b,\\
+        & x_i(1-x_i)=0,\qquad i=1,\dots,n.
+    \end{aligned}
+    \]
+
+    Write the inequality constraint as
+    \[
+    Ax-b\preceq 0.
+    \]
+    Let $\lambda\succeq 0$ be the multiplier for $Ax-b\preceq 0$, and let
+    $\nu\in\mathbb{R}^n$ be the multiplier for the equality constraints
+    $x_i(1-x_i)=0$. The Lagrangian is
+    \[
+    L(x,\lambda,\nu)
+    =
+    c^T x+\lambda^T(Ax-b)+\sum_{i=1}^n \nu_i(x_i-x_i^2).
+    \]
+    Expanding and collecting terms gives
+    \[
+    L(x,\lambda,\nu)
+    =
+    -b^T\lambda
+    +(c+A^T\lambda)^T x
+    +\sum_{i=1}^n \nu_i x_i
+    -\sum_{i=1}^n \nu_i x_i^2.
+    \]
+    Define
+    \[
+    s_i:=c_i+(A^T\lambda)_i.
+    \]
+    Then
+    \[
+    L(x,\lambda,\nu)
+    =
+    -b^T\lambda+\sum_{i=1}^n\Bigl[-\nu_i x_i^2+(s_i+\nu_i)x_i\Bigr].
+    \]
+
+    Therefore the dual function is
+    \[
+    g(\lambda,\nu)
+    =
+    \inf_x L(x,\lambda,\nu)
+    =
+    -b^T\lambda+\sum_{i=1}^n
+    \inf_{x_i\in\mathbb{R}}
+    \Bigl[-\nu_i x_i^2+(s_i+\nu_i)x_i\Bigr].
+    \]
+    For a single coordinate, define
+    \[
+    \phi(s,\nu):=
+    \inf_{x\in\mathbb{R}}\left(-\nu x^2+(s+\nu)x\right).
+    \]
+    We now compute $\phi(s,\nu)$ by cases.
+
+    If $\nu>0$, then $-\nu x^2+(s+\nu)x$ is concave in $x$, so
+    \[
+    \phi(s,\nu)=-\infty.
+    \]
+
+    If $\nu=0$, then
+    \[
+    -\nu x^2+(s+\nu)x=sx.
+    \]
+    Hence
+    \[
+    \phi(s,0)=
+    \begin{cases}
+        0, & s=0,\\
+        -\infty, & s\neq 0.
+    \end{cases}
+    \]
+
+    If $\nu<0$, then the function is strictly convex in $x$, and
+    \[
+    \phi(s,\nu)
+    =
+    -\frac{(s+\nu)^2}{4(-\nu)}
+    =
+    \frac{(s+\nu)^2}{4\nu}.
+    \]
+
+    Thus
+    \[
+    \phi(s,\nu)=
+    \begin{cases}
+        \dfrac{(s+\nu)^2}{4\nu}, & \nu<0,\\[6pt]
+        0, & \nu=0,\ s=0,\\[4pt]
+        -\infty, & \text{otherwise}.
+    \end{cases}
+    \]
+    Hence the dual function is
+    \[
+    g(\lambda,\nu)
+    =
+    -b^T\lambda+\sum_{i=1}^n \phi(s_i,\nu_i),
+    \qquad
+    s_i=c_i+(A^T\lambda)_i.
+    \]
+
+    Therefore the Lagrange dual problem is
+    \[
+    \begin{aligned}
+        \text{maximize}\quad &
+        -b^T\lambda+\sum_{i=1}^n \phi\!\left(c_i+(A^T\lambda)_i,\nu_i\right)\\
+        \text{subject to}\quad & \lambda\succeq 0,
+    \end{aligned}
+    \]
+    where $\phi$ is given above.
+
+    We can simplify this dual by maximizing over each $\nu_i$. For fixed
+    $s$, and $\nu<0$,
+    \[
+    \phi(s,\nu)=\frac{(s+\nu)^2}{4\nu}
+    =\frac{s^2}{4\nu}+\frac{s}{2}+\frac{\nu}{4}.
+    \]
+    Differentiating with respect to $\nu$ gives
+    \[
+    \frac{\partial \phi}{\partial \nu}
+    =
+    -\frac{s^2}{4\nu^2}+\frac14.
+    \]
+    Setting this equal to zero, we obtain
+    \[
+    -\frac{s^2}{4\nu^2}+\frac14=0
+    \quad\Longleftrightarrow\quad
+    \nu^2=s^2.
+    \]
+    Since we must have $\nu<0$, the maximizer is
+    \[
+    \nu^\star=-|s|.
+    \]
+    Substituting back,
+    \[
+    \phi(s,\nu^\star)
+    =
+    -\frac{|s|}{4}+\frac{s}{2}-\frac{|s|}{4}
+    =
+    \frac{s-|s|}{2}
+    =
+    \min\{0,s\}.
+    \]
+    Therefore
+    \[
+    \sup_{\nu\in\mathbb{R}} \phi(s,\nu)=\min\{0,s\}.
+    \]
+    It follows that the dual can be written in the reduced form
+    \[
+    \boxed{
+    \begin{aligned}
+        \text{maximize}\quad &
+        -b^T\lambda+\sum_{i=1}^n \min\bigl\{0,\ c_i+(A^T\lambda)_i\bigr\}\\
+        \text{subject to}\quad & \lambda\succeq 0.
+    \end{aligned}}
+    \]
+    By weak duality, this optimal value is a lower bound on the optimal
+    value of the Boolean LP.
+
+    \item[(b)] The LP relaxation is
+    \[
+    \begin{aligned}
+        \text{minimize}\quad & c^T x\\
+        \text{subject to}\quad & Ax\preceq b,\\
+        & 0\le x_i\le 1,\qquad i=1,\dots,n.
+    \end{aligned}
+    \tag{5.107}
+    \]
+    Rewrite the constraints as
+    \[
+    Ax-b\preceq 0,\qquad -x\preceq 0,\qquad x-\mathbf 1\preceq 0.
+    \]
+    Let the corresponding multipliers be
+    \[
+    \lambda\succeq 0,\qquad \mu\succeq 0,\qquad \eta\succeq 0.
+    \]
+    The Lagrangian is
+    \[
+    L(x,\lambda,\mu,\eta)
+    =
+    c^T x+\lambda^T(Ax-b)+\mu^T(-x)+\eta^T(x-\mathbf 1).
+    \]
+    Expanding gives
+    \[
+    L(x,\lambda,\mu,\eta)
+    =
+    -b^T\lambda-\mathbf 1^T\eta
+    +\bigl(c+A^T\lambda-\mu+\eta\bigr)^T x.
+    \]
+
+    Therefore the dual function is finite if and only if
+    \[
+    c+A^T\lambda-\mu+\eta=0.
+    \]
+    In that case,
+    \[
+    g(\lambda,\mu,\eta)=-b^T\lambda-\mathbf 1^T\eta.
+    \]
+    So the dual of the LP relaxation is
+    \[
+    \begin{aligned}
+        \text{maximize}\quad & -b^T\lambda-\mathbf 1^T\eta\\
+        \text{subject to}\quad & c+A^T\lambda-\mu+\eta=0,\\
+        & \lambda,\mu,\eta\succeq 0.
+    \end{aligned}
+    \]
+
+    Eliminate $\mu$ using
+    \[
+    \mu=c+A^T\lambda+\eta.
+    \]
+    Since $\mu\succeq 0$, this is equivalent to
+    \[
+    c+A^T\lambda+\eta\succeq 0.
+    \]
+    Hence the dual is equivalently
+    \[
+    \begin{aligned}
+        \text{maximize}\quad & -b^T\lambda-\mathbf 1^T\eta\\
+        \text{subject to}\quad & c+A^T\lambda+\eta\succeq 0,\\
+        & \lambda,\eta\succeq 0.
+    \end{aligned}
+    \]
+
+    For fixed $\lambda$, the objective is maximized by choosing the smallest
+    feasible $\eta$, namely
+    \[
+    \eta_i^\star=\max\{0,\,-c_i-(A^T\lambda)_i\}.
+    \]
+    Substituting this into the objective gives
+    \[
+    -b^T\lambda-\sum_{i=1}^n \max\{0,\,-c_i-(A^T\lambda)_i\}.
+    \]
+    Using
+    \[
+    -\max\{0,-s\}=\min\{0,s\},
+    \]
+    we obtain the reduced dual
+    \[
+    \boxed{
+    \begin{aligned}
+        \text{maximize}\quad &
+        -b^T\lambda+\sum_{i=1}^n \min\bigl\{0,\ c_i+(A^T\lambda)_i\bigr\}\\
+        \text{subject to}\quad & \lambda\succeq 0.
+    \end{aligned}}
+    \]
+
+    This is exactly the same problem as the reduced Lagrange dual obtained
+    in part (a). Therefore the two lower bounds are the same.
+
+    Since the LP relaxation is a linear program, its optimal value equals
+    the optimal value of its dual. Hence the lower bound obtained from the
+    LP relaxation coincides with the lower bound obtained from the
+    Lagrangian relaxation.
+\end{enumerate}
+
+\end{solution}
+
+\newpage
+
+\begin{exercise}
+Consider the problem
+\[
+\begin{aligned}
+    \text{minimize} \quad & x_1 \\
+    \text{subject to} \quad & \sqrt{x_1^2 + x_2^2} \le x_2 \\
+    & -x_1 \le 1
+\end{aligned}
+\]
+
+\begin{enumerate}
+    \item[(a)] Calculate the optimal value and the set of optimal solutions.
+    \item[(b)] Derive the dual function and calculate the dual optimal solution. Does strong duality hold? Why?
+    \textit{[Hint: show that } $\lim_{x\to +\infty} \left(\sqrt{a+x^2}-x\right)=0$ \textit{]}
+\end{enumerate}
+\end{exercise}
+
+\newpage
+
+\begin{solution}
+\leavevmode\vspace{-2em}
+
+\begin{enumerate} 
+    \item[(a)] For $x_1$,
+    \[
+    \sqrt{x_1^2+x_2^2}\le x_2
+    \Longleftrightarrow
+    x_1^2+x_2^2\le x_2^2
+    \Longleftrightarrow
+    x_1^2\le 0
+    \Longleftrightarrow
+    x_1=0
+    \]
+    So the first constraint is equivalent to
+    \[
+    x_1=0,\qquad x_2\ge 0.
+    \]
+
+    The second constraint is
+    \[
+    -x_1\le 1.
+    \]
+    Substituting $x_1=0$, we get
+    \[
+    0\le 1,
+    \]
+    which is always satisfied. Therefore the feasible set is
+    \[
+    \{(x_1,x_2)\mid x_1=0,\ x_2\ge 0\}.
+    \]
+
+    Since the objective is to minimize $x_1$, and every feasible point
+    satisfies $x_1=0$, the optimal value is
+    \[
+    p^\star=0.
+    \]
+    The set of optimal solutions is
+    \[
+    X_{\mathrm{opt}}=\{(0,t)\mid t\ge 0\}.
+    \]
+
+    \item[(b)] Rewrite the constraints as
+    \[
+    f_1(x)=\sqrt{x_1^2+x_2^2}-x_2\le 0,
+    \qquad
+    f_2(x)=-x_1-1\le 0.
+    \]
+    Let the corresponding Lagrange multipliers be
+    \[
+    \lambda\ge 0,\qquad \nu\ge 0.
+    \]
+    The Lagrangian is
+    \[
+    L(x,\lambda,\nu)
+    =
+    x_1+\lambda\bigl(\sqrt{x_1^2+x_2^2}-x_2\bigr)+\nu(-x_1-1).
+    \]
+    Rearranging terms gives
+    \[
+    L(x,\lambda,\nu)
+    =
+    (1-\nu)x_1+\lambda\bigl(\sqrt{x_1^2+x_2^2}-x_2\bigr)-\nu.
+    \]
+
+    Therefore the dual function is
+    \[
+    g(\lambda,\nu)
+    =
+    \inf_{x_1,x_2}L(x,\lambda,\nu)
+    =
+    -\nu+\inf_{x_1,x_2}
+    \left[
+    (1-\nu)x_1+\lambda\bigl(\sqrt{x_1^2+x_2^2}-x_2\bigr)
+    \right].
+    \]
+
+    For fixed $x_1$, consider
+    \[
+    \sqrt{x_1^2+x_2^2}-x_2.
+    \]
+    Since
+    \[
+    \sqrt{x_1^2+x_2^2}\ge |x_2|\ge x_2,
+    \]
+    we have
+    \[
+    \sqrt{x_1^2+x_2^2}-x_2\ge 0.
+    \]
+    On the other hand, using the hint with $a=x_1^2$, we obtain
+    \[
+    \lim_{x_2\to+\infty}\left(\sqrt{x_1^2+x_2^2}-x_2\right)=0.
+    \]
+    Hence
+    \[
+    \inf_{x_2}\left(\sqrt{x_1^2+x_2^2}-x_2\right)=0.
+    \]
+
+    It follows that
+    \[
+    g(\lambda,\nu)
+    =
+    -\nu+\inf_{x_1}(1-\nu)x_1.
+    \]
+
+    Now we distinguish two cases.
+
+    If $\nu=1$, then
+    \[
+    (1-\nu)x_1=0,
+    \]
+    so
+    \[
+    g(\lambda,1)=-1.
+    \]
+
+    If $\nu\neq 1$, then $1-\nu\neq 0$, and since $x_1$ is unrestricted in
+    the infimum, we have
+    \[
+    \inf_{x_1}(1-\nu)x_1=-\infty.
+    \]
+    Therefore
+    \[
+    g(\lambda,\nu)=-\infty.
+    \]
+
+    Thus the dual function is
+    \[
+    g(\lambda,\nu)=
+    \begin{cases}
+        -1, & \nu=1,\ \lambda\ge 0,\\
+        -\infty, & \text{otherwise}.
+    \end{cases}
+    \]
+
+    Hence the dual problem is
+    \[
+    \max_{\lambda\ge 0,\ \nu\ge 0} g(\lambda,\nu),
+    \]
+    and its optimal value is
+    \[
+    d^\star=-1.
+    \]
+    The set of dual optimal solutions is
+    \[
+    \{(\lambda,\nu)\mid \lambda\ge 0,\ \nu=1\}.
+    \]
+
+    Since in part (a) we found
+    \[
+    p^\star=0,
+    \]
+    while here
+    \[
+    d^\star=-1,
+    \]
+    we have
+    \[
+    d^\star<p^\star.
+    \]
+    Therefore strong duality does \emph{not} hold.
+
+    The reason is that Slater's condition fails. Indeed, for every
+    $(x_1,x_2)$,
+    \[
+    \sqrt{x_1^2+x_2^2}\ge |x_2|\ge x_2,
+    \]
+    so the strict inequality
+    \[
+    \sqrt{x_1^2+x_2^2}<x_2
+    \]
+    is impossible. Thus there is no strictly feasible point, and a duality
+    gap occurs in this problem.
+\end{enumerate}
+
+\end{solution}
+
+\newpage
+\begin{exercise}
+Consider the QP (over $x_1, x_2$):
+\[
+\begin{aligned}
+    \text{minimize} \quad & x_1^2 + 2x_2^2 - x_1x_2 - x_1 \\
+    \text{subject to} \quad & 5x_1 + 76x_2 \le 1 \\
+    & x_1 + 2x_2 \le u_1 \\
+    & x_1 - 4x_2 \le u_2
+\end{aligned}
+\]
+
+\begin{enumerate}
+    \item[(a)] Use CVXPY to find the primal/dual optimal values for $u_1=-2$, $u_2=-3$ and verify the KKT conditions (within reasonable numerical accuracy).
+    \item[(b)] Use these values to predict the optimal value for
+    \[
+    u_1=-2+\delta_1,\qquad u_2=-3+\delta_2,
+    \]
+    where
+    \[
+    \delta_1,\delta_2\in\{-0.1,0.1\}
+    \]
+    (four combinations). Verify that
+    \[
+    p^\star_{\mathrm{pred}} \le p^\star_{\mathrm{exact}}
+    \]
+    and assess the prediction gap.
+\end{enumerate}
+\end{exercise}
+
+\newpage
+
+\begin{solution}
+Let
+\[
+f(x_1,x_2)=x_1^2+2x_2^2-x_1x_2-x_1.
+\]
+Then
+\[
+\nabla f(x)=
+\begin{bmatrix}
+2x_1-x_2-1\\
+4x_2-x_1
+\end{bmatrix},
+\qquad
+\nabla^2 f(x)=
+\begin{bmatrix}
+2 & -1\\
+-1 & 4
+\end{bmatrix}.
+\]
+Since
+\[
+\det
+\begin{bmatrix}
+2 & -1\\
+-1 & 4
+\end{bmatrix}
+=8-1=7>0
+\]
+and the leading principal minor is also positive, we have
+\[
+\nabla^2 f(x)\succ 0.
+\]
+Hence the objective is strictly convex.
+
+\begin{enumerate}[label=(\alph*)]
+
+\item
+For
+\[
+u_1=-2,\qquad u_2=-3,
+\]
+running \texttt{py/EX\_4/4.py}, we obtain
+\[
+x^\star \approx
+\begin{bmatrix}
+-2.33333333\\
+0.16666667
+\end{bmatrix}
+=
+\begin{bmatrix}
+-\frac73\\
+\frac16
+\end{bmatrix},
+\]
+and
+\[
+p^\star=d^\star=8.222222222222221\approx\frac{74}{9}.
+\]
+so there is no duality gap numerically.
+
+The dual multipliers are
+\[
+\lambda^\star \approx
+\begin{bmatrix}
+0.04007173\\
+2.74774125\\
+2.88523345
+\end{bmatrix}.
+\]
+
+The three constraint slacks are
+\[
+\begin{bmatrix}
+-5.32907052\times 10^{-15}\\
+-4.44089210\times 10^{-16}\\
+0
+\end{bmatrix},
+\]
+so primal feasibility holds up to numerical precision. Since
+\[
+\lambda^\star \succeq 0,
+\]
+dual feasibility also holds.
+
+At the computed point,
+\[
+\nabla f(x^\star)\approx
+\begin{bmatrix}
+-5.83333333\\
+3
+\end{bmatrix}.
+\]
+Let
+\[
+A=
+\begin{bmatrix}
+5 & 76\\
+1 & 2\\
+1 & -4
+\end{bmatrix}.
+\]
+Then the stationarity residual is
+\[
+\nabla f(x^\star)+A^T\lambda^\star
+\approx
+\begin{bmatrix}
+1.77635684\times 10^{-15}\\
+-1.77635684\times 10^{-15}
+\end{bmatrix},
+\]
+and
+\[
+\|\nabla f(x^\star)+A^T\lambda^\star\|_\infty
+=
+1.7763568394002505\times 10^{-15}.
+\]
+The complementary slackness residual is
+\[
+\lambda_i^\star g_i(x^\star)\approx
+\begin{bmatrix}
+-2.13545062\times 10^{-16}\\
+-1.22024224\times 10^{-15}\\
+0
+\end{bmatrix},
+\]
+and
+\[
+\|\lambda_i^\star g_i(x^\star)\|_\infty
+=
+1.2202422391705752\times 10^{-15}.
+\]
+Hence the KKT conditions hold within reasonable numerical accuracy.
+
+Since this is a convex QP with affine constraints, and Slater's condition
+holds, strong duality holds.
+
+The output is:
+\begin{lstlisting}
+Base problem
+status = optimal
+x* = [-2.33333333  0.16666667]
+p* = 8.222222222222221
+d* = 8.222222222222221
+primal-dual gap = 0.0
+dual multipliers = [0.04007173 2.74774125 2.88523345]
+slacks = [-5.32907052e-15 -4.44089210e-16  0.00000000e+00]
+
+KKT check
+gradient = [-5.83333333  3.        ]
+stationarity residual = [ 1.77635684e-15 -1.77635684e-15]
+||stationarity||_inf = 1.7763568394002505e-15
+complementary slackness residual = [-2.13545062e-16 -1.22024224e-15  0.00000000e+00]
+||comp_slack||_inf = 1.2202422391705752e-15
+dual feasibility (lam >= 0) = True
+primal feasibility (slacks >= 0) = True
+\end{lstlisting}
+
+Scripts:
+\lstinputlisting{py/EX_4/4.py}
+
+\item
+For
+\[
+u_1=-2+\delta_1,\qquad u_2=-3+\delta_2,
+\qquad
+\delta_1,\delta_2\in\{-0.1,0.1\},
+\]
+the sensitivity-based prediction is
+\[
+p^\star_{\mathrm{pred}}
+=
+p^\star-\lambda_2^\star\delta_1-\lambda_3^\star\delta_2.
+\]
+Using
+\[
+p^\star=8.222222222222221,
+\qquad
+\lambda_2^\star=2.74774125,
+\qquad
+\lambda_3^\star=2.88523345,
+\]
+we get
+\[
+p^\star_{\mathrm{pred}}
+=
+8.222222222222221-2.74774125\,\delta_1-2.88523345\,\delta_2.
+\]
+
+Running \texttt{py/EX\_4/4.py}, we obtain the following four cases:
+\[
+\begin{array}{c|c|c|c|c}
+\delta_1 & \delta_2 & p^\star_{\mathrm{pred}} & p^\star_{\mathrm{exact}} &
+p^\star_{\mathrm{exact}}-p^\star_{\mathrm{pred}}\\
+\hline
+-0.1 & -0.1 & 8.785519692 & 8.815555556 & 0.030035864\\
+-0.1 & \phantom{-}0.1 & 8.208473002 & 8.318888889 & 0.110415887\\
+\phantom{-}0.1 & -0.1 & 8.235971442 & 8.706386719 & 0.470415276\\
+\phantom{-}0.1 & \phantom{-}0.1 & 7.658924753 & 7.751525608 & 0.092600855
+\end{array}
+\]
+
+Hence, in all four cases,
+\[
+p^\star_{\mathrm{pred}} \le p^\star_{\mathrm{exact}}.
+\]
+So the prediction is indeed a valid lower bound.
+
+The smallest prediction gap is
+\[
+0.030035864
+\]
+for \((\delta_1,\delta_2)=(-0.1,-0.1)\), while the largest prediction gap is
+\[
+0.470415276
+\]
+for \((\delta_1,\delta_2)=(0.1,-0.1)\). Therefore, the first-order prediction
+is accurate for some perturbation directions, but more conservative for others.
+
+The output is:
+\begin{lstlisting}
+Predictions
+delta=(-0.1, -0.1) | pred=8.785519692 | exact=8.815555556 | gap=0.030035864
+delta=(-0.1, +0.1) | pred=8.208473002 | exact=8.318888889 | gap=0.110415887
+delta=(+0.1, -0.1) | pred=8.235971442 | exact=8.706386719 | gap=0.470415276
+delta=(+0.1, +0.1) | pred=7.658924753 | exact=7.751525608 | gap=0.092600855
+\end{lstlisting}
+
+\end{enumerate}
+\end{solution}
+
+\newpage
+\begin{exercise}
+Derive the duals for problems a, b, solve them and verify the KKT conditions:
+
+\begin{enumerate}[label=(\alph*)]
+    \item
+    \[
+    \begin{aligned}
+    \text{minimize} \quad & x_1 + 2x_2 + 3x_3 - x_4 \\
+    \text{subject to} \quad
+    & x_1 - x_2 + x_3 - 2x_4 \le 6, \\
+    & 2x_1 + x_2 - x_3 \ge 2, \\
+    & -x_1 + x_2 - x_3 + x_4 \ge 8, \\
+    & 0 \le x_1 \le 3, \\
+    & 1 \le x_2 \le 4, \\
+    & 0 \le x_3 \le 10, \\
+    & 2 \le x_4 \le 5.
+    \end{aligned}
+    \]
+
+    \item
+    \[
+    \begin{aligned}
+    \text{minimize} \quad & 9x_1^2 + 9x_2^2 - 30x_1 - 72x_2 \\
+    \text{subject to} \quad
+    & -2x_1 - x_2 \ge -4, \\
+    & x_1 \ge 0,\; x_2 \ge 0.
+    \end{aligned}
+    \]
+\end{enumerate}
+\end{exercise}
+
+\newpage
+
+\begin{solution}
+
+Since both problems are convex and satisfy Slater's condition, strong duality holds, and the KKT conditions are necessary and sufficient.
+
+\begin{enumerate}[label=(\alph*)]
+
+\item
+Let
+\[
+c=(1,2,3,-1)^T,\quad
+a_1=(1,-1,1,-2)^T,\quad
+a_2=(2,1,-1,0)^T,\quad
+a_3=(-1,1,-1,1)^T,
+\]
+and
+\[
+\ell=(0,1,0,2)^T,\qquad u=(3,4,10,5)^T.
+\]
+Then the primal problem is
+\[
+\min\ c^Tx
+\]
+subject to
+\[
+a_1^Tx\le 6,\qquad a_2^Tx\ge 2,\qquad a_3^Tx\ge 8,\qquad \ell\le x\le u.
+\]
+
+We rewrite all inequalities in the form ``$\le 0$'':
+\[
+a_1^Tx-6\le 0,\qquad 2-a_2^Tx\le 0,\qquad 8-a_3^Tx\le 0,
+\]
+\[
+\ell-x\le 0,\qquad x-u\le 0.
+\]
+Introduce multipliers
+\[
+y_1,y_2,y_3\ge 0,\qquad \alpha\ge 0,\qquad \beta\ge 0.
+\]
+The Lagrangian is
+\[
+L(x,y,\alpha,\beta)
+=
+c^Tx+y_1(a_1^Tx-6)+y_2(2-a_2^Tx)+y_3(8-a_3^Tx)
++\alpha^T(\ell-x)+\beta^T(x-u).
+\]
+Hence
+\[
+L
+=
+\big(c+y_1a_1-y_2a_2-y_3a_3-\alpha+\beta\big)^Tx
+-6y_1+2y_2+8y_3+\ell^T\alpha-u^T\beta.
+\]
+Therefore, the dual function is finite iff
+\[
+c+y_1a_1-y_2a_2-y_3a_3-\alpha+\beta=0.
+\]
+So the dual problem is
+\[
+\begin{aligned}
+\max\quad &
+-6y_1+2y_2+8y_3+\ell^T\alpha-u^T\beta \\
+\text{s.t.}\quad &
+c+y_1a_1-y_2a_2-y_3a_3-\alpha+\beta=0,\\
+& y\ge 0,\ \alpha\ge 0,\ \beta\ge 0.
+\end{aligned}
+\]
+Expanding the equality constraints gives
+\[
+\begin{aligned}
+1+y_1-2y_2+y_3-\alpha_1+\beta_1 &=0,\\
+2-y_1-y_2-y_3-\alpha_2+\beta_2 &=0,\\
+3+y_1+y_2+y_3-\alpha_3+\beta_3 &=0,\\
+-1-2y_1-y_3-\alpha_4+\beta_4 &=0.
+\end{aligned}
+\]
+The dual objective becomes
+\[
+-6y_1+2y_2+8y_3+\alpha_2+2\alpha_4-3\beta_1-4\beta_2-10\beta_3-5\beta_4.
+\]
+
+Now solve the primal. Since the objective is
+\[
+x_1+2x_2+3x_3-x_4,
+\]
+we want \(x_4\) as large as possible and \(x_1,x_2,x_3\) as small as possible. Take
+\[
+x_4=5,\qquad x_1=0,\qquad x_3=0.
+\]
+Then the third constraint becomes
+\[
+-x_1+x_2-x_3+x_4\ge 8
+\quad\Longrightarrow\quad
+x_2+5\ge 8,
+\]
+so \(x_2\ge 3\). To minimize the objective we take \(x_2=3\). Thus
+\[
+x^*=(0,3,0,5)^T,
+\qquad
+p^*=0+2\cdot 3+0-5=1.
+\]
+
+Therefore, according to slackness and stationarity, a feasible dual point is
+\[
+y^*=(0,0,2),\qquad
+\alpha^*=(3,0,5,0),\qquad
+\beta^*=(0,0,0,3).
+\]
+Indeed,
+\[
+c+y_1a_1-y_2a_2-y_3a_3-\alpha+\beta
+=
+(1,2,3,-1)-2(-1,1,-1,1)-(3,0,5,0)+(0,0,0,3)=0.
+\]
+The dual value is
+\[
+d^*
+=
+-6\cdot 0+2\cdot 0+8\cdot 2+\ell^T\alpha^*-u^T\beta^*
+=
+16-15=1.
+\]
+Hence
+\[
+d^*=p^*=1,
+\]
+so \(y^*,\alpha^*,\beta^*\) is dual optimal.
+
+Now verify the KKT conditions.
+
+\textbf{Primal feasibility:}
+\[
+x^*=(0,3,0,5)^T
+\]
+satisfies all primal constraints.
+
+\textbf{Dual feasibility:}
+\[
+y^*\ge 0,\qquad \alpha^*\ge 0,\qquad \beta^*\ge 0.
+\]
+
+\textbf{Complementary slackness:}
+\[
+y_1(a_1^Tx^*-6)=0,\qquad y_2(2-a_2^Tx^*)=0,\qquad y_3(8-a_3^Tx^*)=2(8-8)=0,
+\]
+and
+\[
+\alpha_i(\ell_i-x_i^*)=0,\qquad \beta_i(x_i^*-u_i)=0,\qquad i=1,2,3,4.
+\]
+In particular,
+\[
+\alpha_1(0-0)=0,\qquad \alpha_3(0-0)=0,\qquad \beta_4(5-5)=0.
+\]
+
+\textbf{Stationarity:}
+\[
+c+y_1a_1-y_2a_2-y_3a_3-\alpha+\beta=0,
+\]
+which we already checked explicitly above.
+
+Therefore all KKT conditions hold.
+
+\item
+Rewrite the constraint
+\[
+-2x_1-x_2\ge -4
+\]
+as
+\[
+2x_1+x_2\le 4.
+\]
+So the primal problem is
+\[
+\begin{aligned}
+\min\quad & 9x_1^2+9x_2^2-30x_1-72x_2\\
+\text{s.t.}\quad & 2x_1+x_2-4\le 0,\\
+& -x_1\le 0,\quad -x_2\le 0.
+\end{aligned}
+\]
+
+Introduce multipliers
+\[
+\lambda\ge 0,\qquad \mu_1\ge 0,\qquad \mu_2\ge 0.
+\]
+The Lagrangian is
+\[
+L(x,\lambda,\mu_1,\mu_2)
+=
+9x_1^2+9x_2^2-30x_1-72x_2
++\lambda(2x_1+x_2-4)-\mu_1x_1-\mu_2x_2.
+\]
+Thus
+\[
+L
+=
+9x_1^2+(2\lambda-30-\mu_1)x_1
++9x_2^2+(\lambda-72-\mu_2)x_2
+-4\lambda.
+\]
+To compute the dual function, minimize with respect to \(x_1,x_2\):
+\[
+\frac{\partial L}{\partial x_1}=18x_1+2\lambda-30-\mu_1=0,
+\qquad
+\frac{\partial L}{\partial x_2}=18x_2+\lambda-72-\mu_2=0.
+\]
+Hence
+\[
+x_1=\frac{30+\mu_1-2\lambda}{18},
+\qquad
+x_2=\frac{72+\mu_2-\lambda}{18}.
+\]
+Substituting back gives
+\[
+g(\lambda,\mu_1,\mu_2)
+=
+-4\lambda
+-\frac{(2\lambda-30-\mu_1)^2}{36}
+-\frac{(\lambda-72-\mu_2)^2}{36}.
+\]
+Therefore the dual problem is
+\[
+\max_{\lambda,\mu_1,\mu_2\ge 0}
+\left[
+-4\lambda
+-\frac{(2\lambda-30-\mu_1)^2}{36}
+-\frac{(\lambda-72-\mu_2)^2}{36}
+\right].
+\]
+
+Now solve the primal. The unconstrained minimizer satisfies
+\[
+18x_1-30=0,\qquad 18x_2-72=0,
+\]
+so
+\[
+x_1=\frac53,\qquad x_2=4.
+\]
+This is infeasible since
+\[
+2\cdot \frac53+4=\frac{22}{3}>4.
+\]
+Hence the optimum lies on the active boundary
+\[
+2x_1+x_2=4.
+\]
+Let
+\[
+x_2=4-2x_1,\qquad 0\le x_1\le 2.
+\]
+Then
+\[
+\phi(x_1)
+=
+9x_1^2+9(4-2x_1)^2-30x_1-72(4-2x_1)
+=
+45x_1^2-30x_1-144.
+\]
+Differentiate:
+\[
+\phi'(x_1)=90x_1-30.
+\]
+Setting \(\phi'(x_1)=0\) gives
+\[
+x_1^*=\frac13,
+\qquad
+x_2^*=4-2\cdot \frac13=\frac{10}{3}.
+\]
+Therefore
+\[
+x^*=\left(\frac13,\frac{10}{3}\right)^T.
+\]
+The optimal value is
+\[
+p^*
+=
+9\left(\frac13\right)^2+9\left(\frac{10}{3}\right)^2
+-30\left(\frac13\right)-72\left(\frac{10}{3}\right)
+=
+1+100-10-240=-149.
+\]
+
+Now solve the dual. Since \(x_1^*>0\) and \(x_2^*>0\), complementary slackness gives
+\[
+\mu_1^*=0,\qquad \mu_2^*=0.
+\]
+Using stationarity,
+\[
+18x_1-30+2\lambda-\mu_1=0,
+\qquad
+18x_2-72+\lambda-\mu_2=0.
+\]
+Substitute \(x^*=(1/3,10/3)\) and \(\mu_1^*=\mu_2^*=0\):
+\[
+18\cdot \frac13-30+2\lambda=0
+\quad\Longrightarrow\quad
+6-30+2\lambda=0
+\quad\Longrightarrow\quad
+\lambda^*=12.
+\]
+So the dual optimal point is
+\[
+(\lambda^*,\mu_1^*,\mu_2^*)=(12,0,0).
+\]
+Its value is
+\[
+d^*
+=
+-4\cdot 12-\frac{(24-30)^2}{36}-\frac{(12-72)^2}{36}
+=
+-48-1-100=-149.
+\]
+Hence
+\[
+d^*=p^*=-149.
+\]
+
+Finally, verify KKT.
+
+\textbf{Primal feasibility:}
+\[
+2x_1^*+x_2^*=2\cdot \frac13+\frac{10}{3}=4,\qquad x_1^*>0,\ x_2^*>0.
+\]
+
+\textbf{Dual feasibility:}
+\[
+\lambda^*=12\ge 0,\qquad \mu_1^*=\mu_2^*=0.
+\]
+
+\textbf{Complementary slackness:}
+\[
+\lambda^*(2x_1^*+x_2^*-4)=12\cdot 0=0,
+\]
+\[
+\mu_1^*x_1^*=0,\qquad \mu_2^*x_2^*=0.
+\]
+
+\textbf{Stationarity:}
+\[
+18x_1^*-30+2\lambda^*-\mu_1^*
+=
+18\cdot \frac13-30+24
+=
+6-30+24=0,
+\]
+\[
+18x_2^*-72+\lambda^*-\mu_2^*
+=
+18\cdot \frac{10}{3}-72+12
+=
+60-72+12=0.
+\]
+
+Therefore all KKT conditions hold.
+
+\end{enumerate}
+
+\end{solution}
+
+\newpage
+\begin{exercise}
+The following problem is for \textit{extra credit}.
+
+Consider the projection of a point on the $\ell_1$ unit ball:
+\[
+\begin{aligned}
+    \text{minimize} \quad & \frac{1}{2}\|x-a\|_2^2 \\
+    \text{subject to} \quad & \|x\|_1 \le 1
+\end{aligned}
+\]
+
+Derive an efficient method for the dual problem and show how to use it to solve the primal. Compare the run-time of your method vs.\ a CVXPY solution for randomly chosen $a\in\mathbb{R}^{300}$.
+
+\textit{[Hint: Show the dual function is differentiable and consider two cases: a) } $\|a\|_1 \le 1$ \textit{ and b) } $\|a\|_1 > 1$ \textit{]}
+\end{exercise}
+
+\newpage
+
+\begin{solution}
+\leavevmode\vspace{-2em}
+
+Let
+\[
+\begin{aligned}
+    \text{minimize} \quad & \frac{1}{2}\|x-a\|_2^2 \\
+    \text{subject to} \quad & \|x\|_1 \le 1.
+\end{aligned}
+\]
+This is the Euclidean projection of $a$ onto the $\ell_1$ unit ball.
+Since $x=0$ satisfies $\|0\|_1=0<1$, Slater's condition holds, so strong duality applies.
+
+Introduce the multiplier $\lambda\ge 0$ for the constraint $\|x\|_1-1\le 0$.
+The Lagrangian is
+\[
+L(x,\lambda)=\frac12\|x-a\|_2^2+\lambda(\|x\|_1-1).
+\]
+Hence the dual function is
+\[
+g(\lambda)=\inf_x L(x,\lambda)
+=\inf_x\left(\frac12\|x-a\|_2^2+\lambda\|x\|_1\right)-\lambda,
+\qquad \lambda\ge 0.
+\]
+Because the objective is separable across coordinates,
+\[
+g(\lambda)
+=-\lambda+\sum_{i=1}^n \inf_{x_i}
+\left[\frac12(x_i-a_i)^2+\lambda |x_i|\right].
+\]
+
+For each coordinate, consider
+\[
+\min_{x_i}\ \frac12(x_i-a_i)^2+\lambda |x_i|.
+\]
+Its minimizer is the soft-thresholding operator
+\[
+x_i(\lambda)=\operatorname{sign}(a_i)(|a_i|-\lambda)_+.
+\]
+Therefore,
+\[
+x(\lambda)=S_\lambda(a).
+\]
+Substituting this minimizer back gives
+\[
+g(\lambda)=-\lambda+\sum_{i=1}^n \phi_i(\lambda),
+\]
+where
+\[
+\phi_i(\lambda)=
+\begin{cases}
+\frac12 a_i^2, & |a_i|\le \lambda,\\[1mm]
+\lambda |a_i|-\frac12\lambda^2, & |a_i|>\lambda.
+\end{cases}
+\]
+
+For each $i$,
+\[
+\phi_i'(\lambda)=
+\begin{cases}
+0, & |a_i|\le \lambda,\\[1mm]
+|a_i|-\lambda, & |a_i|>\lambda.
+\end{cases}
+\]
+At $\lambda=|a_i|$, both one-sided derivatives are $0$, so each $\phi_i$ is differentiable. Hence $g$ is differentiable, with
+\[
+g'(\lambda)
+=-1+\sum_{i=1}^n (|a_i|-\lambda)_+
+=\|S_\lambda(a)\|_1-1.
+\]
+Since $g$ is a dual function, it is concave. Therefore the dual problem is the one-dimensional concave maximization problem
+\[
+\max_{\lambda\ge 0} g(\lambda).
+\]
+
+Next we consider the two cases in the hint.
+
+\textbf{Case 1:} $\|a\|_1\le 1$.
+Then $a$ is already feasible, and the objective $\frac12\|x-a\|_2^2$ is minimized at $x=a$. Thus
+\[
+x^\star=a,
+\qquad
+\lambda^\star=0.
+\]
+
+\textbf{Case 2:} $\|a\|_1>1$.
+Then the optimum lies on the boundary $\|x^\star\|_1=1$. Since
+\[
+x^\star=S_{\lambda^\star}(a),
+\]
+the optimal dual variable satisfies
+\[
+g'(\lambda^\star)=0
+\quad\Longleftrightarrow\quad
+\sum_{i=1}^n (|a_i|-\lambda^\star)_+=1.
+\]
+Hence the primal solution is recovered from the dual solution by
+\[
+x_i^\star
+=
+\operatorname{sign}(a_i)\max(|a_i|-\lambda^\star,0),
+\qquad i=1,\dots,n.
+\]
+
+To compute $\lambda^\star$ efficiently, let
+\[
+u_1\ge u_2\ge \cdots \ge u_n
+\]
+be the entries of $|a|$ sorted in decreasing order, and define
+\[
+s_k=\sum_{i=1}^k u_i.
+\]
+If exactly the first $\rho$ entries are active, then
+\[
+\sum_{i=1}^{\rho}(u_i-\lambda^\star)=1,
+\]
+so
+\[
+\lambda^\star=\frac{s_\rho-1}{\rho}.
+\]
+The correct index is
+\[
+\rho
+=
+\max\left\{k\in\{1,\dots,n\}:\ u_k-\frac{s_k-1}{k}>0\right\}.
+\]
+Thus the algorithm is:
+\[
+\boxed{
+\begin{aligned}
+&\text{if }\|a\|_1\le 1,\ \text{return }x^\star=a,\\
+&\text{otherwise sort }|a| \text{ into }u_1\ge\cdots\ge u_n,\\
+&\rho=\max\left\{k:\ u_k-\frac{s_k-1}{k}>0\right\},\\
+&\lambda^\star=\frac{s_\rho-1}{\rho},\\
+&x^\star=\operatorname{sign}(a)\odot\max(|a|-\lambda^\star,0).
+\end{aligned}}
+\]
+Its complexity is dominated by sorting, so it is $O(n\log n)$.
+
+For a random vector $a\in\mathbb{R}^{300}$, the numerical results are
+\[
+\texttt{custom time}=0.0012628999538719654,
+\qquad
+\texttt{cvxpy time}=0.02643220010213554,
+\]
+\[
+\max_i|x_i^{\text{custom}}-x_i^{\text{cvx}}|
+=6.824176490036887\times 10^{-6},
+\]
+\[
+f(x^{\text{custom}})=147.8812856381681,
+\qquad
+f(x^{\text{cvx}})=147.8812857727218,
+\]
+\[
+\lambda^\star=2.2569512699145116.
+\]
+Therefore the custom method and the CVXPY solution agree up to numerical precision, while the custom method is faster by a factor of about
+\[
+\frac{0.02643220010213554}{0.0012628999538719654}\approx 20.93.
+\]
+Since $\lambda^\star>0$, this experiment belongs to the case $\|a\|_1>1$, and the optimal primal solution is obtained by soft-thresholding.
+
+The output is:
+\begin{lstlisting}
+custom time: 0.0012628999538719654
+cvxpy time: 0.02643220010213554
+max abs diff: 6.824176490036887e-06
+custom objective: 147.8812856381681
+cvx objective: 147.8812857727218
+lambda*: 2.2569512699145116
+\end{lstlisting}
+
+Scripts:
+\lstinputlisting{py/EX_6/6.py}
+
+\end{solution}
+	
+\end{document}
